@@ -12,13 +12,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="pin-generator half-width">
-                    <input id="firstInput" class="form-control text-input" type="text">
+                    <input id="generate-input" class="form-control text-input" type="text">
                     <button id="generatBtn" class="generate-btn">Generate Pin</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="input-section half-width">
-                    <input id="secondInput" class="form-control text-input" type="text">
+                    <input id="calculate-input" class="form-control text-input" type="text">
                     <div class="numbers">
                         <div class="calc-body">
                             <div class="calc-button-row">
@@ -43,7 +43,7 @@
                             </div>
                             <div>
                                 <button id="submitBtn" type="submit" class="submit-btn">Submit</button>
-                                <p class="action-left">3 try left</p>
+                                <p class="action-left"><span id="case-decrease">3</span>try left</p>
                             </div>
                     </div>
                 </div>
@@ -57,12 +57,13 @@
 
     <script>
 
-             const generateForm = document.getElementById("firstInput");
+             const generateForm = document.getElementById("generate-input");
             const generateBtn = document.querySelector(".generate-btn");
-            const calculateForm = document.getElementById("secondInput")
+            const calculateForm = document.getElementById("calculate-input")
             const submitBtn = document.querySelector(".submit-btn");
             const pinMatch = document.getElementById("firstNotify");
             const pinUnmatch = document.getElementById("secondNotify");
+            const caseDecrease = document.getElementById("case-decrease");
 
             const randomNumber = Math.floor(Math.random() * (9999 - 1000)) + 1000;
 
@@ -79,14 +80,24 @@
             }
 
             submitBtn.addEventListener("click", function(){
-                if (calculateForm.value !== '' && generateForm.value !== '' && calculateForm.value == generateForm.value) {
-                  
-                    secondNotify.style.display= 'block'
+                if (calculateForm.value !== "" && generateForm.value !== "" && calculateForm.value == generateForm.value) {
+                  secondNotify.style.display = "block";
+                    firstNotify.style.display = "none";
+               
                 } else {
-                   
-                    firstNotify.style.display = 'block'
+                   firstNotify.style.display = "block";
+                    secondNotify.style.display = "none";
                 }
-            })
+                
+                var currentCase = caseDecrease.innerHTML;
+                 var currentCaseNumber = parseFloat(currentCase);
+                 caseDecrease.innerHTML = -- currentCaseNumber;
+
+                if (currentCaseNumber === 0) {
+                 caseDecrease.innerHTML = "0";
+                 submitBtn.setAttribute("disabled", "disabled");
+                }
+            });
 
             function clearInput() {
                  calculateForm.value = "";
@@ -99,7 +110,6 @@
                     calculateFormValue.length - 1
                 );
             }
-
     </script>
 </body>
 </html>
